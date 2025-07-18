@@ -9,7 +9,7 @@ from photutils.aperture import CircularAperture, aperture_photometry
 st.set_page_config(page_title="성단 거리 측정 앱", layout="centered")
 st.title("성단 거리 측정 앱 (2단계: 별 밝기 자동 추출)")
 
-uploaded_file = st.file_uploader("FITS 이미지 파일을 업로드하세요", type=["fits", "fz"])
+uploaded_file = st.file_uploader("FITS 이미지 파일을 업로드하세요", type=["fits"])
 
 if uploaded_file:
     st.success("FITS 파일이 업로드되었습니다!")
@@ -18,18 +18,7 @@ if uploaded_file:
         data = hdul[0].data
 
     st.subheader("이미지 미리보기 (중앙 500x500)")
-    # 데이터 형태 확인
-shape = np.shape(data)
-st.write(f"데이터 shape: {shape}")
-
-# 2D 또는 3D에 따라 이미지 추출
-if len(shape) == 2:
-    cutout = data[0:500, 0:500]
-elif len(shape) == 3:
-    cutout = data[0, 0:500, 0:500]  # 예: (1, 2048, 2048) 구조일 경우
-else:
-    st.error("지원하지 않는 데이터 구조입니다.")
-    st.stop()
+   cutout = data[0:500, 0:500]
     fig, ax = plt.subplots()
     ax.imshow(cutout, cmap="gray", origin="lower")
     st.pyplot(fig)
