@@ -9,7 +9,7 @@ from photutils.aperture import CircularAperture, aperture_photometry
 st.set_page_config(page_title="성단 거리 측정 앱", layout="centered")
 st.title("성단 거리 측정 앱 (2단계: 별 밝기 자동 추출)")
 
-uploaded_file = st.file_uploader("FITS 이미지 파일을 업로드하세요", type=["fits"])
+uploaded_file = st.file_uploader("FITS 이미지 파일을 업로드하세요", type=["fits", "fz"])
 
 if uploaded_file:
     st.success("FITS 파일이 업로드되었습니다!")
