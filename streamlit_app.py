@@ -18,7 +18,7 @@ if uploaded_file:
         data = hdul[0].data
 
     st.subheader("이미지 미리보기 (중앙 500x500)")
-   cutout = data[0:500, 0:500]
+    cutout = data[0:500, 0:500]
     fig, ax = plt.subplots()
     ax.imshow(cutout, cmap="gray", origin="lower")
     st.pyplot(fig)
