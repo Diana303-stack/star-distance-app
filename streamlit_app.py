@@ -42,6 +42,12 @@ if uploaded_file:
         # 밝기 측정 (aperture photometry)
         apertures = CircularAperture(positions, r=4.)
         phot_table = aperture_photometry(clean_data, apertures)
+        # 가짜 B/V 등급 생성
+np.random.seed(42)
+phot_table['B_mag'] = -2.5 * np.log10(phot_table['aperture_sum'] + 1) + np.random.normal(0, 0.2, len(phot_table))
+phot_table['V_mag'] = phot_table['B_mag'] - np.random.normal(0.3, 0.1, len(phot_table))
+phot_table['Color'] = phot_table['B_mag'] - phot_table['V_mag']
+phot_table['Magnitude'] = phot_table['V_mag']
         st.write("상위 100개 별의 측정 결과:")
         st.dataframe(phot_table.to_pandas().head(100))
 
@@ -51,5 +57,17 @@ if uploaded_file:
         ax2.imshow(clean_data, cmap='gray', origin='lower', vmax=np.percentile(clean_data, 99))
         apertures.plot(color='red', lw=1.5, alpha=0.5, axes=ax2)
         st.pyplot(fig2)
+        import plotly.express as px
+
+        st.subheader("색등급도 (Color–Magnitude Diagram)")
+        df = phot_table.to_pandas()
+
+        fig = px.scatter(df, x='Color', y='Magnitude',
+                         labels={'Color': 'B − V', 'Magnitude': 'V (겉보기 등급)'},
+                         title='색등급도 (C-M Diagram)',
+                         height=600)
+
+        fig.update_yaxes(autorange='reversed')  # 등급은 작을수록 밝음
+        st.plotly_chart(fig)
     else:
         st.warning("별을 찾지 못했습니다. 다른 FITS 이미지를 시도해보세요.")
