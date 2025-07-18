@@ -43,11 +43,11 @@ if uploaded_file:
         apertures = CircularAperture(positions, r=4.)
         phot_table = aperture_photometry(clean_data, apertures)
         # 가짜 B/V 등급 생성
-np.random.seed(42)
-phot_table['B_mag'] = -2.5 * np.log10(phot_table['aperture_sum'] + 1) + np.random.normal(0, 0.2, len(phot_table))
-phot_table['V_mag'] = phot_table['B_mag'] - np.random.normal(0.3, 0.1, len(phot_table))
-phot_table['Color'] = phot_table['B_mag'] - phot_table['V_mag']
-phot_table['Magnitude'] = phot_table['V_mag']
+        np.random.seed(42)
+        phot_table['B_mag'] = -2.5 * np.log10(phot_table['aperture_sum'] + 1) + np.random.normal(0, 0.2, len(phot_table))
+        phot_table['V_mag'] = phot_table['B_mag'] - np.random.normal(0.3, 0.1, len(phot_table))
+        phot_table['Color'] = phot_table['B_mag'] - phot_table['V_mag']
+        phot_table['Magnitude'] = phot_table['V_mag']
         st.write("상위 100개 별의 측정 결과:")
         st.dataframe(phot_table.to_pandas().head(100))
 
